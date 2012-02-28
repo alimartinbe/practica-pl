@@ -1,0 +1,21 @@
+% ------------------ Macro para la licencia -----------------------------------
+%    Uso: \portada{asignatura}{titulo}{subtítulo}{autor}{fecha}
+% -----------------------------------------------------------------------------
+\def\licencia#1{
+  \thispagestyle{empty}  % Suprime la numeración de esta página
+  \vspace*{16.5cm}
+  \begin{small}
+    \copyright~ #1. Se permite la copia, distribución y/o 
+    modificación de este documento bajo los términos de la licencia de
+    documentación libre GNU, versión 1.1 o cualquier versión posterior publicada
+    por la {\em Free Software Foundation}, sin secciones invariantes. Puede
+    consultar esta licencia en http://www.gnu.org. \\[0.2cm]
+    Este documento fue compuesto con \LaTeX{}. 
+  \end{small}
+  \newpage
+%   \thispagestyle{empty}
+%   \vspace*{0cm}
+%   \newpage
+}
+% -----------------------------------------------------------------------------
+

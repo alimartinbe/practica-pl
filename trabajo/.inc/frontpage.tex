@@ -1,0 +1,35 @@
+% ------------------ Macro para la portada ------------------------------------
+%    Uso: \portada{asignatura}{titulo}{subtítulo}{autor}{fecha}
+% -----------------------------------------------------------------------------
+\def\portada#1#2#3#4#5{
+  \thispagestyle{empty}
+  \vspace*{-3.3cm}
+
+  \begin{minipage}[t]{14cm}
+    \begin{center}
+      \includegraphics[scale=0.25]{logo}
+  
+      \vspace*{1.5cm}
+      {\Large \textbf{Universidad de Castilla-La Mancha\\ 
+          Escuela Superior de Informática}\\}
+    
+      \vspace*{1.2cm}
+      {\huge \textbf{#1}\\}
+    
+      \vspace*{1.5cm}
+      {\huge #2\\}{\Large #3\\}
+    
+      \vspace*{1.5cm}
+      {\large #4\\}
+      \vspace*{1.4cm}
+      \large{#5}
+    \end{center}
+  \end{minipage}
+
+  \newpage
+%   \vspace*{1cm}
+%   \thispagestyle{empty} 
+%   \newpage
+}
+% -----------------------------------------------------------------------------
+

@@ -1,0 +1,78 @@
+% Clase
+\documentclass[11pt,a4paper,spanish,twoside]{book}
+
+% Órdenes auxiliares
+\input{inc/includes.tex}
+
+\usepackage{amsthm}
+\usepackage{verbatim}
+\usepackage{multirow}
+
+%Para las secciones y las subseciones
+\makeatletter
+\renewcommand{\section}{
+  \@startsection{section}{1}{0mm}{\baselineskip}
+  {2.5mm}{\Large\bf}
+}
+\renewcommand{\subsection}{
+  \@startsection{subsection}{2}{0mm}{2mm}
+  {4.0mm}{\bf}
+}
+\renewcommand{\subsubsection}{
+  \@startsection{subsubsection}{3}{0mm}{2mm}
+  {0.1mm}{\normalsize\bf\emph}
+}
+\makeatother
+
+\theoremstyle{plain} \newtheorem{nota}{Nota}
+
+% Encabezado y pie de página
+\encabezado
+
+\begin{document}
+
+% Portada
+\portada{Procesadores de Lenguaje}
+{$1^{er}$ Trabajo en grupo}{Analizador sintáctico descendente LL1\\
+\emph{Enunciado}}{Alicia Martín-Benito Escalona\\
+Juan Miguel Torres Triviño}{25 de Noviembre de 2011}  
+
+% Licencia
+\licencia{Alicia Martín-Benito Escalona, Juan Miguel Torres Triviño} 
+
+\section*{Enunciado del ejercicio propuesto}
+ 
+El enunciado del ejercicio para el trabajo 1 de teoría es el siguiente:\\
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{lll}
+    \hline
+    J   & $\to$ & E I R PL\\
+    E   & $\to$ & escenario \{ F , PE , ( OB ) \}\\
+    OB  & $\to$ & OB' OBS\\
+    OB' & $\to$ & OB , | $\varepsilon$\\
+    F   & $\to$ & f1 | f2 | f3 | f4\\
+    PE  & $\to$ & mono | pajaro | gato\\
+    OBS & $\to$ & llave | caja | puerta\\
+    I   & $\to$ & inicial \{ PE X , REP \}\\
+    REP  & $\to$ & OBS X REP'\\
+    X    & $\to$ & ( POS , U )\\
+    REP' & $\to$ & , REP | $\varepsilon$\\
+    POS & $\to$ & pa | pb | pc | pd\\
+    U   & $\to$ & arriba | abajo\\
+    R   & $\to$ & posacc \{ PE ( Y ) , Z \}\\
+    Z    & $\to$ & OBS ( Y ) Z'\\
+    Z'   & $\to$ & , Z | $\varepsilon$\\
+    Y    & $\to$ & AC Y'\\
+    Y'   & $\to$ & , Y | $\varepsilon$\\
+    PL  & $\to$ & plan \{ W \}\\
+    W   & $\to$ & W , ACC | ACC\\
+    ACC & $\to$ & AC ( PE ) | AC ( POS , POS ) |\\
+        &       & AC ( OBS , POS ) | AC ( OBS , POS , POS ) |\\
+        &       & AC ( OBS , POS , U )\\
+    AC  & $\to$ & comer | salir | ir\\
+    \hline
+  \end{tabular}
+  \caption{Gramática inicial}\label{G1I}
+\end{table}
+\end{document}

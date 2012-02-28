@@ -1,0 +1,17 @@
+% ------------------ Macro para insertar una imagen ---------------------------
+%    Uso: \imagen{nombreFichero}{Ancho(cm))}{Etiqueta}{Identificador}
+% -----------------------------------------------------------------------------
+\usepackage{float}
+\usepackage{ifthen}
+\def\imagen#1#2#3#4{
+  \begin{figure}[H]
+    \begin{center}
+      \ifthenelse{\equal{#2}{}}
+      {\includegraphics{#1}}{\resizebox{#2cm}{!}{\includegraphics{#1}}}
+      \ifthenelse{\equal{#3}{}}{}{\caption{#3}}
+      \label{#4}
+    \end{center}
+  \end{figure}
+}
+% -----------------------------------------------------------------------------
+

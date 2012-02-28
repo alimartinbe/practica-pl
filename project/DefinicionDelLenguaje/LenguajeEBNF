@@ -1,0 +1,20 @@
+JUEGO ::= ESCENARIO INICIAL PLAN  [COMENTARIO]
+
+ESCENARIO ::= escenario '{' FONDO ',' PERSONAJE ',' ( OBJETO { ',' OBJETO} ) '}'
+FONDO ::= fondo1 | fondo2 | fondo3 | fondo4
+PERSONAJE ::= mono | pajaro | gato 
+OBJETO ::= llave | caja | puerta | bombilla | maceta | jarron | tele | rama | fruta | agua | semilla 
+
+INICIAL ::= inicio '{' PERSONAJE ( UBICACION ) ',' OBJETO ( UBICACION) { ',' OBJETO (UBICACION) } '}'
+UBICACION ::= 'A' | 'B' | 'C' | 'D' 
+
+PLAN ::= plan '{' ACCION OBJETO { ',' ACCION OBJETO} ',' PERSONAJE feliz '}' 
+ACCION ::= mover | coger | abrir | subir | echar | encender | usar | romper | comer | apagar | salir
+
+COMENTARIO ::= # {LETRA | NUM | ESPACIO | OTRAS} #
+LETRA ::= MAYUS | MINUS
+MAYUS ::= A|B|C|D|E|F|G|H|I|J|K|L|M|N|Ñ|O|P|Q|R|S|T|U|V|W|X|Y|Z
+MINUS ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|ñ|o|p|q|r|s|t|u|v|w|x|y|z
+NUM ::= 0|1|2|3|4|5|6|7|8|9|
+ESPACIO ::= \#x20 | \t | \n | \r
+OTRAS ::= ,|(|)|{|}

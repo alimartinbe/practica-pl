@@ -1,0 +1,9 @@
+#Hay un mono en una habitación que tiene 6 posiciones espaciales: pa, pb, pc, pd, arriba y abajo. Hay 3 objetos: llave, puerta y caja. El mono está en la posición pa, la llave está colgada ( arriba) en la posición pc, la caja está en el suelo(abajo) en la posición pb y la puerta está en la posición pd. El mono debe subirse a la caja para conseguir la llave y abrir la puerta, con esto estará feliz.#
+
+escenario{ fondo2, mono, (caja, puerta, llave)}
+
+inicio{ mono(pa,abajo), caja(pb,abajo), llave(pc,arriba), puerta(pd,abajo)}
+
+posacciones{ mono(ir, feliz, subira, bajarde), caja(mover), llave(coger,usar), puerta(abrir)}
+
+plan{ ir(pa,pb), mover(caja,pb,pc),subira(caja,pc,arriba), coger(llave,pc), bajarde(caja,pc,abajo), ir(pc,pd), usar(llave,pd), abrir(puerta,pd), feliz(mono)}

@@ -1,0 +1,35 @@
+% Fancyhdr - Encabezados y pies de página
+\usepackage{fancyhdr}
+% Márgenes
+\headsep=8mm
+\footskip=14mm
+
+% Fancy Header Style Options
+\pagestyle{fancy}               % Sets fancy header and footer
+\fancyfoot{}                    % Delete current footer settings
+
+% Sin mayúsculas en la cabecera
+\lhead{\nouppercase{\rightmark}}
+\rhead{\nouppercase{\leftmark}}
+
+% Capítulo
+\renewcommand{\chaptermark}[1]{ % Lower Case Chapter marker style
+  \markboth{\chaptername\ \thechapter.\ #1}{}} 
+
+% Sección
+\renewcommand{\sectionmark}[1]{ % Lower case Section marker style
+  \markright{\thesection.\ #1}} 
+
+% Página
+\fancyhead[LE,RO]{\bfseries\thepage} % Page number (boldface) in left on even
+                                     % pages and right on odd pages
+
+% ------------------ Macro para encabezados y pies de página-------------------
+%    Uso: \encabezado{pares(pag izquierda)}
+% -----------------------------------------------------------------------------
+\def\encabezado{
+  \fancyhead[RE]{\bfseries\leftmark}     % In the right on even pages
+  \fancyhead[LO]{\bfseries\rightmark}  % In the left on odd pages
+  \renewcommand{\headrulewidth}{0.5pt} % Width of head rule
+}
+% -----------------------------------------------------------------------------

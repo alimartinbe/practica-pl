@@ -1,0 +1,71 @@
+% Español
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+%\usepackage{textcomp}
+%\usepackage{times}
+
+% Símbolo del euro
+\usepackage{textcomp}
+
+%Profundidad de numeración
+\setcounter{secnumdepth}{3}
+
+% Imágenes
+\usepackage[pdftex]{graphicx}
+\usepackage{latexsym}
+\usepackage{fancybox}
+
+% Tablas
+\usepackage{array}
+
+% Enumeraciones
+\usepackage{enumerate}
+
+% Ruta para las imágenes
+\graphicspath{{img/}}
+
+% Rotaciones
+\usepackage[twoside]{rotating}
+
+% Multirow
+\usepackage{multirow}
+
+% Referencias
+\usepackage[spanish]{varioref}
+\usepackage[pdftex,colorlinks=true,linkcolor=black]{hyperref}
+
+% Colores
+\usepackage{color}
+\usepackage{colortbl}
+
+% Párrafos
+\setlength{\parskip}{6pt}
+
+% Code for creating empty pages
+% No headers on empty pages before new chapter
+\makeatletter
+\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
+    \hbox{}
+    \thispagestyle{empty}
+    \newpage
+    \if@twocolumn\hbox{}\newpage\fi\fi\fi}
+\makeatother \clearpage{\pagestyle{empty}\cleardoublepage}
+
+%Para las secciones y las subseciones de las actas
+\makeatletter
+\renewcommand{\section}{%
+  \@startsection{section}{1}{0mm}{\baselineskip}%
+  {0.1mm}{\large\bf}%
+}%
+\renewcommand{\subsection}{%
+  \@startsection{subsection}{2}{0mm}{2mm}%
+  {0.1mm}{\normalsize\bf}%
+}%
+\renewcommand{\subsubsection}{%
+  \@startsection{subsubsection}{3}{0mm}{2mm}%
+  {0.1mm}{\normalsize\bf\emph}%
+}%
+\makeatother

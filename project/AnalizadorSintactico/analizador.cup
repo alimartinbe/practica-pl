@@ -1,0 +1,48 @@
+
+import java_cup.runtime.*;
+import java.io.*;
+
+parser code {:
+	public static void main(String args[]) throws Exception {
+	FileInputStream fichero=new FileInputStream(args[0]);
+	DataInputStream entrada =new DataInputStream(fichero);
+	try{
+	new parser(new analizadorLexico(entrada)).parse();
+	}
+	catch ( Exception e) {
+		System.out.println("Analisis INCORRECTO !!");
+		System.exit(1);}
+	System.out.println("Analisis Correcto ");
+	
+	}
+:}
+
+
+terminal ESCENARIO, INISEC, COMA, PARIZQ, PARDER, FINSEC, PLAN, POSACCIONES, INICIO;
+terminal String FONDO, PERSONAJE, ACCION, OBJETO, POSICION, UBICACION;
+
+non terminal juego, escenario, ob, obs, inicio, pos, rep, repe, restriccion, list, lista, par, para, plan, ac, acp, acc, acca, acce, acci;
+
+
+
+juego ::= escenario inicio restriccion plan;
+escenario ::= ESCENARIO INISEC FONDO COMA PERSONAJE COMA PARIZQ ob PARDER FINSEC;
+ob ::= OBJETO obs;
+obs ::= COMA ob | ;
+inicio ::= INICIO INISEC PERSONAJE pos COMA rep FINSEC;
+pos ::= PARIZQ POSICION COMA UBICACION PARDER;
+rep ::= OBJETO pos repe;
+repe ::= COMA rep | ;
+restriccion ::= POSACCIONES INISEC PERSONAJE PARIZQ par PARDER COMA list FINSEC;
+list ::= OBJETO PARIZQ par PARDER lista;
+lista ::= COMA list | ;
+par ::= ACCION para;
+para ::= COMA par | ;
+plan ::= PLAN INISEC ac FINSEC;
+ac ::= acc acp;
+acp ::= COMA ac | ;
+acc ::= ACCION PARIZQ acca ;
+acca ::= PERSONAJE PARDER | POSICION COMA POSICION PARDER | OBJETO COMA POSICION acce;
+acce ::= PARDER | COMA acci;
+acci ::= POSICION PARDER | UBICACION PARDER;
+

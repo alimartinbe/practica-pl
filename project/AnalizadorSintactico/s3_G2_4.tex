@@ -1,0 +1,120 @@
+% Clase
+\documentclass[11pt,a4paper,spanish,twoside]{book}
+
+% Órdenes auxiliares
+\input{inc/includes.tex}
+
+\usepackage{amsthm}
+\usepackage{verbatim}
+\usepackage{multirow}
+\usepackage{rotating}
+
+%Para las secciones y las subseciones
+\makeatletter
+\renewcommand{\section}{
+  \@startsection{section}{1}{0mm}{\baselineskip}
+  {2.5mm}{\Large\bf}
+}
+\renewcommand{\subsection}{
+  \@startsection{subsection}{2}{0mm}{2mm}
+  {4.0mm}{\bf}
+}
+\renewcommand{\subsubsection}{
+  \@startsection{subsubsection}{3}{0mm}{2mm}
+  {0.1mm}{\normalsize\bf\emph}
+}
+\makeatother
+
+\theoremstyle{plain} \newtheorem{nota}{Nota}
+
+% Encabezado y pie de página
+\encabezado
+
+\begin{document}
+
+% Portada
+\portada{Procesadores de Lenguaje}
+{3ª Entrega}{Analizador Sintáctico\\\emph{Generador de mini-aventuras 
+gráficas en 2D}}{Alicia Martín-Benito Escalona\\Juan Miguel Torres Triviño}{05 
+de Marzo de 2012}  
+
+% Licencia
+\licencia{Alicia Martín-Benito Escalona, Juan Miguel Torres Triviño} 
+
+% Índices
+\tableofcontents
+%\listoftables
+%\listoffigures
+\chapter{Gramática Libre de contexto}
+La gramática libre de contexto procedente de la corregida en notación
+EBNF del analizador léxico es la siguiente:
+\\ 
+\\
+\emph{terminal} ESCENARIO, INISEC, COMA, PARIZQ, PARDER, FINSEC, PLAN, POSACCIONES, INICIO;
+\\
+\\
+\emph{terminal String} FONDO, PERSONAJE, ACCION, OBJETO, POSICION, UBICACION;
+\\
+\\
+\emph{non terminal} juego, escenario, ob, obs, inicio, pos, rep, repe, restriccion, list, lista, par, para, plan, ac, acp, acc, acca, acce, acci;
+\\
+juego ::= escenario inicio restriccion plan
+\\
+\\
+escenario ::= ESCENARIO INISEC FONDO COMA PERSONAJE COMA PARIZQ ob PARDER FINSEC; 
+\\
+\\
+ob ::= OBJETO obs;
+\\
+\\
+obs ::= COMA ob | ;
+\\
+\\
+inicio ::= INICIO INISEC PERSONAJE pos COMA rep FINSEC;
+\\
+\\
+pos ::= PARIZQ POSICION COMA UBICACION PARDER;
+\\
+\\
+rep ::= OBJETO pos repe;
+\\
+\\
+repe ::= COMA rep | ;
+\\
+\\
+restriccion ::= POSACCIONES INISEC PERSONAJE PARIZQ par PARDER COMA list FINSEC;
+\\
+\\
+list ::= OBJETO PARIZQ par PARDER lista;
+\\
+\\
+lista ::= COMA list | ;
+\\
+\\
+par ::= ACCION para;
+\\
+\\
+para ::= COMA par | ;
+\\
+\\
+plan ::= PLAN INISEC ac FINSEC;
+\\
+\\
+ac ::= acc acp;
+\\
+\\
+acp ::= COMA ac | ;
+\\
+\\
+acc ::= ACCION PARIZQ acca;
+\\
+\\
+acca ::= PERSONAJE PARDER | POSICION COMA POSICION PARDER | OBJETO COMA POSICION acce;
+\\
+\\
+acce ::= PARDER | COMA acci;
+\\
+\\
+acci ::= POSICION PARDER | UBICACION PARDER;
+
+\end{document}

@@ -1,0 +1,23 @@
+\newsavebox{\nombrecaja}
+\savebox{\nombrecaja}{\includegraphics[scale=0.07]{logo.pdf}}
+\topmargin=-1cm
+\usepackage{fancyhdr}
+\headsep=18mm
+\footskip=14mm
+
+\pagestyle{fancy}                       % Sets fancy header and footer
+\fancyfoot{}
+
+\fancyhead[R]{Grupo G5 \\
+  \textbf{Ingeniería del Software II}}    
+\fancyhead[L]{\usebox{\nombrecaja}}  % Section in the left on odd pages
+\renewcommand{\headrulewidth}{0.5pt} % Width of head rule
+
+\fancypagestyle{plain}{
+  \fancyhead[R]{Grupo G5 \\
+    \textbf{Ingeniería del Software II}}    
+  \fancyhead[L]{\usebox{\nombrecaja}}  % Section in the left on odd pages
+  \renewcommand{\headrulewidth}{0.5pt} % Width of head rule
+}
+
+

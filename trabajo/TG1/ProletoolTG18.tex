@@ -1,0 +1,86 @@
+% Clase
+\documentclass[11pt,a4paper,spanish,twoside]{book}
+
+% Órdenes auxiliares
+\input{inc/includes.tex}
+
+\usepackage{amsthm}
+\usepackage{verbatim}
+\usepackage{multirow}
+
+%Para las secciones y las subseciones
+\makeatletter
+\renewcommand{\section}{
+  \@startsection{section}{1}{0mm}{\baselineskip}
+  {2.5mm}{\Large\bf}
+}
+\renewcommand{\subsection}{
+  \@startsection{subsection}{2}{0mm}{2mm}
+  {4.0mm}{\bf}
+}
+\renewcommand{\subsubsection}{
+  \@startsection{subsubsection}{3}{0mm}{2mm}
+  {0.1mm}{\normalsize\bf\emph}
+}
+\makeatother
+
+\theoremstyle{plain} \newtheorem{nota}{Nota}
+
+% Encabezado y pie de página
+\encabezado
+
+\begin{document}
+
+% Portada
+\portada{Procesadores de Lenguaje}
+{$1^{er}$ Trabajo en grupo}{Analizador sintáctico descendente LL1\\Proletool}
+{Alicia Martín-Benito Escalona\\Juan Miguel Torres Triviño}{25 de Noviembre de 
+2011}  
+
+% Licencia
+\licencia{Alicia Martín-Benito Escalona, Juan Miguel Torres Triviño} 
+
+\section*{Ejercicio en Proletool}
+ 
+El enunciado del ejercicio en el formato de la herramienta proletool es el 
+siguiente:\\
+
+\begin{tabbing}
+----- \= --- \= \kill
+grammar gramll\\
+\{\\
+\> analysis LL1;\\
+\> nonterminal J, E, OB, OB', F, PE, OBS, I, REP, X, REP', POS, U, R,\\
+\> \> Z, Z', Y, Y', PL, W, ACC, AC;\\
+\> terminal escenario, f1, f2, f3, f4, mono, pajaro, gato, llave, caja, \\
+\> \> puerta, inicial, pa, pb, pc, pd, arriba, abajo, posacc, plan, comer,\\
+\> \> salir, ir;\\
+\\
+\> J := E I R PL;\\
+\> E := escenario '\{' F ',' PE ',' '(' OB ')' '\}';\\
+\> OB  := OB' OBS;\\
+\> OB' := OB ',' | ;\\
+\> F   := f1 | f2 | f3 | f4;\\
+\> PE  := mono | pajaro | gato;\\
+\> OBS := llave | caja | puerta;\\
+\> I   := inicial '\{' PE X ',' REP '\}';\\
+\> REP := OBS X REP';\\
+\> X   := '(' POS ',' U ')';\\
+\> REP':= ',' REP | ;\\
+\> POS := pa | pb | pc | pd;\\
+\> U   := arriba | abajo;\\
+\> R   := posacc '\{' PE '(' Y ')' ',' Z '\}';\\
+\> Z   := OBS '(' Y ')' Z';\\
+\> Z'  := ',' Z | ;\\
+\> Y   := AC Y';\\
+\> Y'  := ',' Y | ;\\
+\> PL  := plan '\{' W '\}';\\
+\> W   := W ',' ACC | ACC;\\
+\> ACC := AC '(' PE ')' | AC '(' POS ',' POS ')' |\\
+\> AC '(' OBS ',' POS ')' | AC '(' OBS ',' POS ',' POS ')' |\\
+\> AC '(' OBS ',' POS ',' U ')';\\
+\> AC  :=  comer | salir | ir;\\
+\}\\
+\end{tabbing}
+
+\end{document}

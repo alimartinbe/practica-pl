@@ -1,0 +1,318 @@
+% Clase
+\documentclass[11pt,a4paper,spanish,twoside]{book}
+
+% Órdenes auxiliares
+\input{inc/includes.tex}
+
+\usepackage{amsthm}
+\usepackage{verbatim}
+\usepackage{multirow}
+\usepackage{rotating}
+
+%Para las secciones y las subseciones
+\makeatletter
+\renewcommand{\section}{
+  \@startsection{section}{1}{0mm}{\baselineskip}
+  {2.5mm}{\Large\bf}
+}
+\renewcommand{\subsection}{
+  \@startsection{subsection}{2}{0mm}{2mm}
+  {4.0mm}{\bf}
+}
+\renewcommand{\subsubsection}{
+  \@startsection{subsubsection}{3}{0mm}{2mm}
+  {0.1mm}{\normalsize\bf\emph}
+}
+\makeatother
+
+\theoremstyle{plain} \newtheorem{nota}{Nota}
+
+% Encabezado y pie de página
+\encabezado
+
+\begin{document}
+
+% Portada
+\portada{Procesadores de Lenguaje}
+{2ª Entrega}{Resumen actual de la práctica\\\emph{Generador de mini-aventuras 
+gráficas en 2D}}{Alicia Martín-Benito Escalona\\Juan Miguel Torres Triviño}{14 
+de Febrero de 2012}  
+
+% Licencia
+\licencia{Alicia Martín-Benito Escalona, Juan Miguel Torres Triviño} 
+
+% Índices
+\tableofcontents
+\listoftables
+\listoffigures
+\chapter{Introducción del problema}
+El objetivo del lenguaje a definir es un generador de mini-aventuras gráficas 
+en 2D, la primera idea es definir un escenario con un personaje, una serie de 
+objetos y una serie de acciones que si no se realizan en dicho orden, no se 
+cumple el objetivo de la mini-aventura, hacer feliz al personaje. La idea surgió
+de un juego sencillo que tiene bastantes versiones en internet, llamado 
+\emph{Monkey Go Happy}, este juego da una serie de objetos y realizándolos en 
+orden consigue hacer sonreír al mono. Un ejemplo de escenario de este juego se 
+puede ver en la imagen \ref{mono}.
+\imagen{img/monkey-go-happy-44.jpg}{10}{Ejemplo Monkey Go Happy.}{mono}
+
+Ya que dicho problema permite cualquier tipo de situación, por tanto definimos 
+una serie de fondos, personajes, ubicaciones, objetos y acciones. De esta forma
+,elegimos un fondo, un personaje, una serie de objetos, la ubicación de los 
+objetos y el personaje y por último, una serie de acciones sobre los objetos 
+donde la última acción es hacer al personaje feliz. Además, definimos un 
+estado inicial, donde se ubican personajes y objetos en el escenario o fondo.
+
+Después de definir toda la mini-aventura en 2D, el usuario dándole la situación
+inicial, debe pulsar el ratón al igual que en el juego de ejemplo y así cumplir
+todas las acciones en orden para finalizar la mini-aventura.
+ 
+\section{Diagrama en T}
+
+El diseño del sistema queda representado por el Diagrama en T que muestra la
+figura \ref{diagrama}.
+\imagen{img/DiagramT.jpg}{11}{Diagrama en T del sistema.}{diagrama}
+
+\section{Lenguaje de entrada}
+Un ejemplo del lenguaje de entrada es el siguiente:
+\begin{verbatim}
+#Hay un mono en una habitación que tiene 6 posiciones espaciales: pa, pb, 
+pc, pd, arriba y abajo. Hay 3 objetos: llave, puerta y caja. El mono está 
+en la posición pa, la llave está colgada ( arriba) en la posición pc, la 
+caja está en el suelo(abajo) en la posición pb y la puerta está en la 
+posición pd. El mono debe subirse a la caja para conseguir la llave y abrir 
+la puerta, con esto estará feliz.#
+
+escenario{ fondo2, mono, (caja, puerta, llave)}
+
+inicio{ mono(pa,abajo), caja(pb,abajo), llave(pc,arriba), puerta(pd,abajo)}
+
+posacciones{ mono(ir, feliz), caja(mover, subira, bajarde), llave(coger,usar), 
+puerta(abrir)}
+
+plan{ ir(pa,pb), mover(caja,pb,pc),subira(caja,pc,arriba), coger(llave,pc), 
+bajarde(caja,pc,abajo), ir(pc,pd), usar(llave,pd), abrir(puerta,pd), 
+feliz(mono)}
+\end{verbatim}
+
+\chapter{Notación EBNF}
+La notación \emph{EBNF} de la práctica conforme a la estructura anterior queda 
+de la siguiente manera:
+\\ 
+\\
+JUEGO ::= ESCENARIO INICIAL RESTRICCION PLAN
+\\
+DESCRIPCION ::= \# \{LETRA | NUM | ESPACIO | OTRAS\} \#
+\\
+ESCENARIO ::= \textbf{escenario} '\{' FONDO ',' PERSONAJE ',' ( OBJETO { ',' 
+OBJETO} ) '\}'
+\\
+FONDO ::= \textbf{fondo1} | \textbf{fondo2} | \textbf{fondo3} | \textbf{fondo4}
+\\
+PERSONAJE ::= \textbf{mono} | \textbf{pajaro} | \textbf{gato} 
+\\
+OBJETO ::= \textbf{llave} | \textbf{caja} | \textbf{puerta} | \textbf{bombilla}
+ | \textbf{maceta} | \textbf{jarron} | \textbf{tele} | \textbf{rama} | 
+\textbf{fruta} | \textbf{agua} | \textbf{semilla} 
+\\
+INICIAL ::= \textbf{inicio} '\{' PERSONAJE (POSICION ',' UBICACION) ',' OBJETO 
+(POSICION ',' UBICACION) \{ ',' OBJETO (POSICION ',' UBICACION) \} '\}'
+\\
+POSICION ::= '\textbf{pa}' | '\textbf{pb}' | '\textbf{pc}' | '\textbf{pd}'
+\\
+UBICACION ::= '\textbf{arriba}' | '\textbf{abajo}'
+\\
+RESTRICCION ::= \textbf{posacciones} '\{' PERSONAJE (ACCION \{',' ACCION\})',' 
+OBJETO (ACCION \{',' ACCION\}) \{',' OBJETO (ACCION {',' ACCION\})\}
+\\
+PLAN ::= \textbf{plan} '\{' ACCIONES \{ ',' ACCIONES \}'\}'
+\\ 
+ACCIONES ::= ACCION (PERSONAJE) | ACCION (POSICION, POSICION) | 
+ACCION (OBJETO, POSICION) | ACCION (OBJETO, POSICION, POSICION) | 
+ACCION (OBJETO, POSICION, UBICACION)
+\\
+ACCION ::= \textbf{mover} | \textbf{coger} | \textbf{abrir} | \textbf{subira} | 
+\textbf{echar} | \textbf{encender} | \textbf{usar} | \textbf{romper} | 
+\textbf{comer} | \textbf{apagar} | \textbf{salir} | \textbf{bajarde} | 
+\textbf{ir} | \textbf{feliz}
+\\
+LETRA ::= MAYUS | MINUS
+\\
+MAYUS ::= A|B|C|D|E|F|G|H|I|J|K|L|M|N|Ñ|O|P|Q|R|S|T|U|V|W|X|Y|Z
+\\
+MINUS ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|ñ|o|p|q|r|s|t|u|v|w|x|y|z
+\\
+NUM ::= 0|1|2|3|4|5|6|7|8|9|
+\\
+ESPACIO ::= \#x20 | $\backslash$t | $\backslash$n | $\backslash$r
+\\
+OTRAS ::= ,|(|)|\{|\}
+
+\chapter{Diagramas de Conway}
+Algunas de las construcciones sintácticas definidas en el capítulo anterior
+pueden ser complicadas entender haciendo uso solamente de la notación EBNF,
+por lo cual en este capítulo describimos dichas construcciones mediante
+diagramas de Conway.
+
+\begin{itemize}
+\item ESCENARIO.
+\imagen{img/escenario.png}{15}{Diagrama de Conway para Escenario.}{}
+\item INICIAL.
+\imagen{img/inicial.png}{15}{Diagrama de Conway para Inicial.}{}
+\item PLAN.
+\imagen{img/plan.png}{15}{Diagrama de Conway para Plan.}{}
+\item RESTRICCION.
+\imagen{img/restriccion.png}{15}{Diagrama de Conway para Restriccion} {}
+\item ACCIONES.
+\imagen{img/acciones.png}{15}{Diagrama de Conway para Acciones}{}
+\end{itemize}
+
+\chapter{Primeras restricciones semánticas del lenguaje}
+Las restriciones semánticas iniciales que hemos encontrado son las siguientes:
+\begin{itemize}
+\item En la definición de los objetos del escenario, ya que no tenemos límite
+de objetos, debemos tener en cuenta que no se repitan objetos.
+\item En la definición de \emph{inicio}, donde situamos los objetos y el 
+personaje, no pueden aparecer objetos o personajes que no hayan sido definidos 
+en el escenario.
+\item Deben de aparecer todos los objetos y el personaje en la parte del código 
+de \emph{inicio}, previamente definidos todos en la parte \emph{escenario}.
+\item No puede haber dos objetos en una misma posición, sin embargo, pueden 
+aparecer el personaje y un objeto en la misma posición.
+\item Las restricciones definidas en \emph{posacciones} serán de libre elección
+por el usuario, por lo cual, debe saber que acciones se realizan sobre qué 
+objeto o personaje.
+\item En \emph{posacciones} deben aparecer los objetos y el personaje que hayan
+sido definidos en \emph{escenario}. Por el contrario no deben aparecer objetos
+no definidos.
+\item En la parte \emph{plan} deben aparecer los objetos y el personaje que 
+hayan sido definidos en \emph{escenario}. No deben de aparecer objetos no 
+definidos.
+\item En la parte \emph{plan} sólo puede haber acciones que hayan sido elegidas
+para los objetos o el personaje en la parte \emph{posacciones}.
+\item Las acciones con argumentos definidas en el \emph{plan} se deben comprobar
+que pueden ser factibles para esas definiciones previas, siempre dando libertad
+para crear cualquier tipo de situación.
+\item Debe aparecer el objetivo final de hacer feliz al personaje.
+\end{itemize}
+
+\chapter{Tokens}
+\section{Tabla descriptiva}
+En el cuadro \ref{tokens} se pueden ver los tokens de la grámatica sobre el 
+generador de miniaventuras gráficas en 2D. En dicha tabla se indica el nombre 
+del token, posibles valores, si tiene atributos y la expresión regular 
+correspondiente.
+
+\begin{sidewaystable}[!ht]
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+     \textbf{NOMBRE} & \textbf{VALORES} & \textbf{ATRIBUTOS} & 
+     \textbf{EXPRESIÓN REGULAR}\\\hline\hline
+     \emph{Escenario} & escenario & palabra reservada & escenario\\\hline
+     \emph{Inisec} & \{ & & \{\\\hline
+     \emph{Finsec} & \} & & \}\\\hline
+     \emph{Coma} & , & & ,\\\hline
+     \emph{Parizq} & ( & & (\\\hline
+     \emph{Parder} & ) & & )\\\hline
+     \emph{Fondo} & fondo1,fondo2... & lexema & fondo1|fondo2|fondo3|fondo4\\
+     \hline
+     \emph{Personaje} & mono,pajaro... & lexema & mono|pajaro|gato\\\hline
+     & & & llave|caja|puerta|bombilla|\\
+     \emph{Objeto} & puerta,llave... & lexema & maceta|jarron|tele|rama|\\
+     & & & fruta|agua|semilla\\\hline
+     \emph{Inicio} & inicio & palabra reservada & inicio\\\hline
+     \emph{Posición} & pa,pb... & lexema & pa|pb|pc|pd\\\hline
+     \emph{Ubicación} & arriba,abajo & lexema & arriba|abajo\\\hline
+     \emph{Posacciones} & posacciones & palabra reservada & posacciones\\\hline
+     \emph{Plan} & plan & palabra reservada & plan\\\hline
+     & & & mover|coger|abrir|subira|echar|\\
+     \emph{Acción} & mover,coger... & lexema & ir|encender|usar|romper|
+     bajarde|\\
+     & & & feliz|comer|apagar|salir\\\hline
+  \end{tabular}
+  \caption{Tabla de tokens}\label{tokens}
+\end{sidewaystable}
+
+\section{Autómatas Finitos Determinitas}
+En esta sección se procede a mostrar los autómatas finitos de cada una de las 
+expresiones regulares del cuadro \ref{tokens}. Los autómatas son los siguientes:
+
+\begin{itemize}
+\item Autómata del token \emph{Escenario}, figura \ref{afesc}.
+\item Autómata del token \emph{Inisec}, figura \ref{afis}.
+\item Autómata del token \emph{Finsec}, figura \ref{affs}.
+\item Autómata del token \emph{Separador}, figura \ref{afs}.
+\item Autómata del token \emph{Parizq}, figura \ref{afpi}.
+\item Autómata del token \emph{Parder}, figura \ref{afpd}.
+\item Autómata del token \emph{Fondo}, figura \ref{aff}.
+\item Autómata del token \emph{Personaje}, figura \ref{afp}.
+\item Autómata del token \emph{Objeto}, figura \ref{afo}.
+\item Autómata del token \emph{Inicio}, figura \ref{afini}.
+\item Autómata del token \emph{Posición}, figura \ref{afpos}.
+\item Autómata del token \emph{Ubicación}, figura \ref{afu}.
+\item Autómata del token \emph{Posacciones}, figura \ref{afpa}.
+\item Autómata del token \emph{Plan}, figura \ref{afpl}
+\item Autómata del token \emph{Acción}, figura \ref{afa}.
+\end{itemize}
+
+\imagen{img/AutomataEscenario.png}{8}{Autómata del token escenario.}{afesc}
+\imagen{img/AutomataInicioSeccion.png}{8}{Autómata del token inisec.}{afis}
+\imagen{img/AutomataFinSeccion.png}{8}{Autómata del token finsec.}{affs}
+\imagen{img/AutomataSeparador.png}{8}{Autómata del token separador.}{afs}
+\imagen{img/AutomataParIz.png}{8}{Autómata del token parizq.}{afpi}
+\imagen{img/AutomataParDer.png}{8}{Autómata del token parder.}{afpd}
+\imagen{img/AutomataFondo.png}{8}{Autómata del token fondo.}{aff}
+\imagen{img/AutomataPersonaje.png}{8}{Autómata del token personaje.}{afp}
+\imagen{img/AutomataObjetos.png}{8}{Autómata del token objeto.}{afo}
+\imagen{img/AutomataInicio.png}{8}{Autómata del token inicio.}{afini}
+\imagen{img/AutomataPosicion.png}{8}{Autómata del token posición.}{afpos}
+\imagen{img/AutomataUbicacion.png}{8}{Autómata del token ubicación.}{afu}
+\imagen{img/AutomataPosacciones.png}{8}{Autómata del token posacciones.}{afpa}
+\imagen{img/AutomataPlan.png}{8}{Autómata del token plan.}{afpl}
+\imagen{img/AutomataAcciones.png}{8}{Autómata del token acción.}{afa}
+
+\chapter{Gramática EBNF corregida}
+
+La notación \emph{EBNF} de la práctica final, es decir, ya está corregida, 
+queda de la siguiente manera:
+\\ 
+\\
+JUEGO ::= ESCENARIO INICIAL RESTRICCION PLAN
+\\
+\\
+ESCENARIO ::= \textbf{Escenario} \textbf{Inisec} \textbf{Fondo} \textbf{Coma} 
+\textbf{Personaje} \textbf{Coma} \textbf{Parizq} \textbf{Objeto} \{ 
+\textbf{Coma} \textbf{Objeto} \} \textbf{Parder} \textbf{Finsec}
+\\
+\\
+INICIAL ::= \textbf{Inicio} \textbf{Inisec} \textbf{Personaje} \textbf{Parizq}
+\textbf{Posicion} \textbf{Coma} \textbf{Ubicacion} \textbf{Parder} 
+\textbf{Coma} \textbf{Objeto} \textbf{Parizq} \textbf{Posicion} \textbf{Coma} 
+\textbf{Ubicacion} \textbf{Parder} \{ \textbf{Coma} \textbf{Objeto} 
+\textbf{Parizq} \textbf{Posicion} \textbf{Coma} \textbf{Ubicacion} 
+\textbf{Parder} \} \textbf{Finsec}
+\\
+\\
+RESTRICCION ::= \textbf{Posacciones} \textbf{Inisec} \textbf{Personaje} 
+\textbf{Parizq} \textbf{Accion} \{ \textbf{Coma} \textbf{Accion} \} 
+\textbf{Parder} \textbf{Coma} \textbf{Objeto} \textbf{Parizq} \textbf{Accion} 
+\{ \textbf{Coma} \textbf{Accion} \} \textbf{Parder} \{ \textbf{Coma} 
+\textbf{Objeto}  \textbf{Accion} \{ \textbf{Coma} \textbf{Accion} \} 
+\textbf{Parder} \textbf{Finsec}
+\\
+\\
+PLAN ::= \textbf{Plan} \textbf{Inisec} ACCIONES \{ \textbf{Coma} ACCIONES \}
+\textbf{Finsec}
+\\
+\\ 
+ACCIONES ::= \textbf{Accion} \textbf{Parizq} \textbf{Personaje} \textbf{Parder}
+| \\\textbf{Accion} \textbf{Parizq} \textbf{Posicion} \textbf{Coma} 
+\textbf{Posicion} \textbf{Parder} |\\ \textbf{Accion} \textbf{Parizq} 
+\textbf{Objeto} \textbf{Coma} \textbf{Posicion} \textbf{Parder} |\\ 
+\textbf{Accion} \textbf{Parizq} \textbf{Objeto} \textbf{Coma} \textbf{Posicion}
+\textbf{Coma} \textbf{Posicion} \textbf{Parder} |\\ \textbf{Accion} 
+\textbf{Parizq} \textbf{Objeto} \textbf{Coma} \textbf{Posicion} \textbf{Coma} 
+\textbf{Ubicacion} \textbf{Parder}
+
+\end{document}

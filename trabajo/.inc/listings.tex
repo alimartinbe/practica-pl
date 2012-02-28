@@ -1,0 +1,30 @@
+% Entorno Listings para código fuente
+\usepackage{listingsutf8}[2007/11/11]
+
+\lstset{
+  frame=Ltb, %forma del cuadro
+  framerule=0pt, %ancho del borde
+  aboveskip=0.5cm, %separación de los números de línea
+  framexleftmargin=0.4cm, %margen externo izquierdo
+  framesep=0pt,
+  rulesep=.4pt,
+  rulesepcolor=\color{black},
+  % 
+  stringstyle=\ttfamily,
+  showstringspaces = false,
+  basicstyle=\scriptsize,
+  keywordstyle=\bfseries,
+  % 
+  numbers=left,
+  numbersep=15pt,
+  numberstyle=\tiny,
+  numberfirstline= false,
+  %
+  inputencoding=utf8/latin1
+}
+
+% minimizar fragmentado de listados
+\lstnewenvironment{listing}[1][]{
+  \lstset{#1}\pagebreak[0]}{\pagebreak[0]
+}
+

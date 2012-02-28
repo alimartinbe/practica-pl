@@ -1,0 +1,77 @@
+//* --------------------------Seccion codigo-usuario ------------------------*/ 
+import java_cup.runtime.Symbol;
+
+%% 
+
+/* -----------------Seccion de opciones y declaraciones -----------------*/ 
+/*--OPCIONES --*/ 
+/* Nombre de la clase generada para el analizadorlexico*/ 
+
+%class analizadorLexico 
+
+/* Indicar funcionamientoautonomo*/ 
+
+%unicode
+%standalone
+
+/* Posibilitar acceso a la columna y fila actual de analisis*/ 
+
+%line
+
+%column
+
+/* Habilitar la compatibilidad con el interfaz CUP para el generador sintáctico */
+ 
+%cup
+
+/* Tipo de implentacion del analizador lexico Tabla o Switch */ 
+
+ %table
+
+/*--DECLARACIONES --*/ 
+
+%{ 
+
+%} 
+/* Fin Declaraciones */
+
+
+NL = \n|\r|\r\n
+BLANCO = " "
+TAB = \t
+COMENTARIO = "#" [^"#"] ~"#"
+
+%%
+/* ------------------------Seccion de reglas y acciones ----------------------*/
+<YYINITIAL> {
+
+"escenario" 		{return new Symbol(sym.ESCENARIO);}
+"{"                 {return new Symbol(sym.INISEC);}
+"}"                 {return new Symbol(sym.FINSEC);}
+","                 {return new Symbol(sym.COMA);}
+"("                 {return new Symbol(sym.PARIZQ);}
+")"                 {return new Symbol(sym.PARDER);}
+("fondo1"|"fondo2"|"fondo3"|"fondo4")  
+                    {return new Symbol(sym.FONDO, new String(yytext()));}
+("mono"|"pajaro"|"gato")
+                    {return new Symbol(sym.PERSONAJE, new String(yytext()));}
+("llave"|"caja"|"puerta"|"bombilla"|"maceta"|"jarron"|"tele"|"rama"|"fruta"|"agua"|"semilla")
+                    {return new Symbol(sym.OBJETO, new String(yytext()));}
+"inicio"            {return new Symbol(sym.INICIO);}
+("pa"|"pb"|"pc"|"pd") 
+                    {return new Symbol(sym.POSICION, new String(yytext()));}
+("arriba"|"abajo")  {return new Symbol(sym.UBICACION, new String(yytext()));}
+"posacciones"       {return new Symbol(sym.POSACCIONES);}
+"plan"              {return new Symbol(sym.PLAN);}
+("mover"|"coger"|"abrir"|"echar"|"encender"|"usar"|"romper"|"comer"|"apagar"|"salir"|"subira"|"bajarde"|"ir"|"feliz")
+                    {return new Symbol(sym.ACCION, new String(yytext()));}
+
+{NL}				{ /* ignoramos los saltos de línea y retornos de carro */ }
+{TAB}				{ /* ignora los tabuladores */ }
+{BLANCO}			{ /* ignora los espacios en blanco */ }
+{COMENTARIO}        {/*  ignora los comentarios*/}
+
+. 			{System.out.println("Token No Valido <" +yytext()+ ">linea: " + (yyline+1) + " columna: " + (yycolumn+1));}
+
+
+}/* fin YYinitial */

@@ -1,0 +1,25 @@
+JUEGO ::= [DESCRIPCION] ESCENARIO INICIAL RESTRICCION PLAN
+
+DESCRIPCION ::= # {LETRA | NUM | ESPACIO | OTRAS} #
+
+ESCENARIO ::= escenario '{' FONDO ',' PERSONAJE ',' ( OBJETO { ',' OBJETO} ) '}'
+FONDO ::= fondo1 | fondo2 | fondo3 | fondo4
+PERSONAJE ::= mono | pajaro | gato 
+OBJETO ::= llave | caja | puerta | bombilla | maceta | jarron | tele | rama | fruta | agua | semilla 
+
+INICIAL ::= inicio '{' PERSONAJE (POSICION ',' UBICACION) ',' OBJETO (POSICION ',' UBICACION) { ',' OBJETO (POSICION ',' UBICACION) } '}'
+POSICION ::= 'pa' | 'pb' | 'pc' | 'pd'
+UBICACION ::= 'arriba' | 'abajo'
+
+RESTRICCION ::= posacciones '{' PERSONAJE (ACCION {',' ACCION})',' OBJETO (ACCION {',' ACCION}) {',' OBJETO (ACCION {',' ACCION})}
+
+PLAN ::= plan '{' ACCIONES { ',' ACCIONES } '}' 
+ACCIONES ::= ACCION (PERSONAJE) | ACCION (POSICION, POSICION) | ACCION (OBJETO, POSICION) | ACCION (OBJETO, POSICION, POSICION) | ACCION (OBJETO, POSICION, UBICACION)
+ACCION ::= mover | coger | abrir | subir | echar | encender | usar | romper | comer | apagar | salir
+
+LETRA ::= MAYUS | MINUS
+MAYUS ::= A|B|C|D|E|F|G|H|I|J|K|L|M|N|Ñ|O|P|Q|R|S|T|U|V|W|X|Y|Z
+MINUS ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|ñ|o|p|q|r|s|t|u|v|w|x|y|z
+NUM ::= 0|1|2|3|4|5|6|7|8|9|
+ESPACIO ::= \#x20 | \t | \n | \r
+OTRAS ::= ,|(|)|{|}

@@ -1,0 +1,33 @@
+TABLA DE TOKENS
+
+	NOMBRE		   VALORES			ATRIBUTOS			EXP.REGULAR
+
+      Escenario ------    escenario	----------   palabra reservada   ----------	 escenario
+	
+  Inicio sección -----	     {		----------    			  ---------	     {
+
+   Fin sección  -----	     }		---------			 ----------	     }
+
+   Separador     -----       ,          ----------                       -----------         ,
+
+Paréntesis izquierdo --      (          ----------                       -----------         (
+
+Paréntesis derecho   --      )          ----------                       ------------        )
+
+      Fondo   --- fondo1,fondo2,fondo3,fondo4 ----        lexema          ------------ fondo1|fondo2|fondo3|fondo4
+
+  Personaje  ---  mono, pajaro , gato  -----------        lexema              ------------    mono|gato|pajaro
+
+  Objeto      --- llave,caja,puerta... ----------      lexema              ------------  llave|caja|puerta|bombilla|maceta...
+
+ Inicio      ----         inicio       ----------   palabra reservada    -----------       inicio
+
+ Posición    ----     pa,pb,pc,pd     -------------    lexema                 -------------  pa|pb|pc|pd
+
+ Ubicación  -----   arriba, abajo      ----------      lexema                 -------------       arriba|abajo
+
+ Posacciones -----  posacciones         ----------  palabra reservada   -------------    posacciones
+
+ Acción      -----   mover,coger,abrir,... -------     lexema                 ------------- mover|coger|abrir|subir|echar...
+
+    

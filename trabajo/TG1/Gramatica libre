@@ -1,0 +1,20 @@
+J -> E I R PL.
+E -> escenario { F , PE , ( OB ) }.
+OB -> OB , OBS | OBS . 
+F -> f1|f2|f3|f4.
+PE -> mono | pajaro | gato.
+OBS -> llave | caja | puerta.
+I -> inicial { PE X , REP }.
+REP -> REP , OBS X | OBS X.
+X -> ( POS , U ).
+POS -> pa | pb | pc | pd.
+U -> arriba | abajo.
+R -> posacc { PE ( Y ) , Z }.
+Z -> Z , OBS ( Y ) | OBS ( Y ).
+Y -> Y , AC | AC.
+PL -> plan { W }.
+W -> w , ACC | ACC.
+ACC -> AC ( PE ) | AC ( POS , POS ) | AC ( OBS , POS ) | AC ( OBS , POS , POS ) | AC ( OBS , POS , U ).
+AC -> comer | salir | ir.
+
+
