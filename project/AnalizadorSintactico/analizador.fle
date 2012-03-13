@@ -48,7 +48,7 @@ COMENTARIO = "#" [^"#"] ~"#"
 "escenario" 		{return new Symbol(sym.ESCENARIO);}
 "{"                 {return new Symbol(sym.INISEC);}
 "}"                 {return new Symbol(sym.FINSEC);}
-","                 {return new Symbol(sym.COMA);}
+","                 {return new Symbol(sym.COMA, yyline, yycolumn);}
 "("                 {return new Symbol(sym.PARIZQ);}
 ")"                 {return new Symbol(sym.PARDER);}
 ("fondo1"|"fondo2"|"fondo3"|"fondo4")  
