@@ -26,7 +26,7 @@ import java_cup.runtime.Symbol;
 
 /* Tipo de implentacion del analizador lexico Tabla o Switch */ 
 
- %table
+%table
 
 /*--DECLARACIONES --*/ 
 
@@ -45,26 +45,26 @@ COMENTARIO = "#" [^"#"] ~"#"
 /* ------------------------Seccion de reglas y acciones ----------------------*/
 <YYINITIAL> {
 
-"escenario" 		{return new Symbol(sym.ESCENARIO);}
-"{"                 {return new Symbol(sym.INISEC);}
-"}"                 {return new Symbol(sym.FINSEC);}
+"escenario" 		{return new Symbol(sym.ESCENARIO, yyline, yycolumn);}
+"{"                 {return new Symbol(sym.INISEC, yyline, yycolumn);}
+"}"                 {return new Symbol(sym.FINSEC, yyline, yycolumn);}
 ","                 {return new Symbol(sym.COMA, yyline, yycolumn);}
-"("                 {return new Symbol(sym.PARIZQ);}
-")"                 {return new Symbol(sym.PARDER);}
+"("                 {return new Symbol(sym.PARIZQ, yyline, yycolumn);}
+")"                 {return new Symbol(sym.PARDER, yyline, yycolumn);}
 ("fondo1"|"fondo2"|"fondo3"|"fondo4")  
-                    {return new Symbol(sym.FONDO, new String(yytext()));}
+                    {return new Symbol(sym.FONDO, yyline, yycolumn, new String(yytext()));}
 ("mono"|"pajaro"|"gato")
-                    {return new Symbol(sym.PERSONAJE, new String(yytext()));}
+                    {return new Symbol(sym.PERSONAJE, yyline, yycolumn, new String(yytext()));}
 ("llave"|"caja"|"puerta"|"bombilla"|"maceta"|"jarron"|"tele"|"rama"|"fruta"|"agua"|"semilla")
-                    {return new Symbol(sym.OBJETO, new String(yytext()));}
-"inicio"            {return new Symbol(sym.INICIO);}
+                    {return new Symbol(sym.OBJETO, yyline, yycolumn, new String(yytext()));}
+"inicio"            {return new Symbol(sym.INICIO, yyline, yycolumn);}
 ("pa"|"pb"|"pc"|"pd") 
-                    {return new Symbol(sym.POSICION, new String(yytext()));}
-("arriba"|"abajo")  {return new Symbol(sym.UBICACION, new String(yytext()));}
-"posacciones"       {return new Symbol(sym.POSACCIONES);}
-"plan"              {return new Symbol(sym.PLAN);}
+                    {return new Symbol(sym.POSICION, yyline, yycolumn, new String(yytext()));}
+("arriba"|"abajo")  {return new Symbol(sym.UBICACION, yyline, yycolumn, new String(yytext()));}
+"posacciones"       {return new Symbol(sym.POSACCIONES, yyline, yycolumn);}
+"plan"              {return new Symbol(sym.PLAN, yyline, yycolumn);}
 ("mover"|"coger"|"abrir"|"echar"|"encender"|"usar"|"romper"|"comer"|"apagar"|"salir"|"subira"|"bajarde"|"ir"|"feliz")
-                    {return new Symbol(sym.ACCION, new String(yytext()));}
+                    {return new Symbol(sym.ACCION, yyline, yycolumn, new String(yytext()));}
 
 {NL}				{ /* ignoramos los saltos de línea y retornos de carro */ }
 {TAB}				{ /* ignora los tabuladores */ }
