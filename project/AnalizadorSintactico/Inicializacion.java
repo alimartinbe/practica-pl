@@ -38,6 +38,11 @@ public class Inicializacion {
 		this.ubicacion = ubicacion;
 	}
     
+	public String toString() {
+		
+		return elemento + ", " + posicion + ", " + ubicacion + "\n";
+		
+	}
     
 
 }

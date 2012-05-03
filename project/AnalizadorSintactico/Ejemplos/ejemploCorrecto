@@ -2,10 +2,10 @@
 
 escenario{ fondo2, mono, (caja, puerta, llave)}
 
-inicio{ mono(pa,abajo), caja(pb,abajo), llave(pc,arriba), puerta(pd,abajo)}
+inicio{ mono(pa,abajo), caja(pd,abajo), llave(pc,arriba), puerta(pd,abajo)}
 
 posacciones{ mono(ir, subira, bajarde), caja(mover), llave(coger,usar), puerta(abrir)}
 
-plan{ ir(pa,pb), mover(caja,pb,pc),subira(caja,pc,arriba), coger(llave,pc), bajarde(caja,pc,abajo), ir(pc,pd), usar(llave,pd), abrir(puerta,pd)}
+plan{ ir(pa,pb), mover(caja,pb,pc),subira(caja,pc,arriba), coger(llave,pc), bajarde(caja,pc,abajo), ir(pc,pd), usar(llave,pd), abrir(puerta,pd), feliz(mono)}
 
 

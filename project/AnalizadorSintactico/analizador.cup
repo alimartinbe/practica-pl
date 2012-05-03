@@ -1,6 +1,7 @@
 
 import java_cup.runtime.*;
 import java.io.*;
+import java.lang.*;
 
 import java.util.ArrayList;
 
@@ -39,11 +40,19 @@ parser code {:
 terminal ESCENARIO, INISEC, COMA, PARIZQ, PARDER, FINSEC, PLAN, POSACCIONES, INICIO;
 terminal String FONDO, PERSONAJE, ACCION, OBJETO, POSICION, UBICACION;
 
-non terminal juego, inicio, pos, rep, repe, restriccion, list, lista, par, para, plan, ac, acp, acc, acca, acce, acci;
+non terminal juego;
 non terminal Escenario escenario;
-non terminal ArrayList<String> ob, obs;
+non terminal ArrayList<String> ob, obs, para, par;
+non terminal Inicio inicio;
+non terminal ArrayList<Inicializacion> rep, repe;
+non terminal String pos, acci, acce, acca;
+non terminal posiblesAcciones restriccion;
+non terminal ArrayList<accionesElemento> list, lista;
+non terminal ArrayList<Paso> plan, ac, acp;
+non terminal Paso acc;
 
-juego ::= escenario:e inicio restriccion plan {: System.out.println(e.getLista().toString()); :};
+juego ::= escenario:e inicio:i restriccion:r plan:p {:Utilidades u = new Utilidades();
+		System.out.println(u.comprobarReglasSemanticas(e, i, r, p));:};
 
 escenario ::= ESCENARIO INISEC FONDO:f COMA PERSONAJE:p COMA PARIZQ ob:objeto PARDER FINSEC 
 		{: RESULT = new Escenario(p, f, objeto); :}
@@ -52,52 +61,58 @@ escenario ::= ESCENARIO INISEC FONDO:f COMA PERSONAJE:p COMA PARIZQ ob:objeto PA
         | ESCENARIO INISEC error COMA PERSONAJE COMA PARIZQ ob PARDER FINSEC {: parser.report_error("Falta el fondo en la declaración.", null); :}
         | ESCENARIO INISEC FONDO COMA error COMA PARIZQ ob PARDER FINSEC {: parser.report_error("Falta el personaje.", null); :};
 
-ob ::= OBJETO:o obs:objeto1 {:  RESULT = objeto1;  RESULT.add(o); System.out.println(o);:}
+ob ::= OBJETO:o obs:objeto1 {:  RESULT = objeto1;  RESULT.add(o);:}
         | error obs {: parser.report_error("Falta el objeto antes de la declaración de su posición.", null); :};
 
 obs ::= COMA ob:o1 {: RESULT = o1;:}| {:ArrayList<String> lista = new ArrayList<String>(); RESULT = lista;:};
 
-inicio ::= INICIO INISEC PERSONAJE pos COMA rep FINSEC
+inicio ::= INICIO INISEC PERSONAJE:per pos:po COMA rep:r FINSEC {:String[] l = po.split(","); RESULT = new Inicio(new Inicializacion(per, l[0], l[1]), r);:}
         | error INISEC PERSONAJE pos COMA rep FINSEC {: parser.report_error("Falta la palabra reservada <inicio> al comienzo de la declaración.", null); :}
         | INICIO INISEC error pos COMA rep FINSEC {: parser.report_error("Falta el personaje.", null); :}; 
 
-pos ::= PARIZQ POSICION COMA UBICACION PARDER
+pos ::= PARIZQ POSICION:pos COMA UBICACION:u PARDER {:RESULT = new String(pos + ","+ u);:}
         | error {: parser.report_error("Falta la declaración de la posición del personaje.", null); :}
         | PARIZQ POSICION COMA:c error PARDER {: parser.report_error("Falta la ubicacion del personaje.", null); :}
         | PARIZQ error COMA UBICACION PARDER {: parser.report_error("Falta la posicion del personaje.", null); :};
 
-rep ::= OBJETO pos repe
+rep ::= OBJETO:ob pos:po repe: obje {:RESULT = obje; RESULT.add(new Inicializacion(ob, po.split(",")[0],po.split(",")[1]));:}
         |error pos repe {: parser.report_error("Falta el objeto antes de la declaración de su posición.", null); :};
 
-repe ::= COMA rep | ;
+repe ::= COMA rep:re {:RESULT = re;:} | {:ArrayList<Inicializacion> listInic = new ArrayList<Inicializacion>(); RESULT = listInic;:};
 
-restriccion ::= POSACCIONES INISEC PERSONAJE PARIZQ par PARDER COMA list FINSEC 
+restriccion ::= POSACCIONES INISEC PERSONAJE:pe PARIZQ par:pa PARDER COMA list:li FINSEC {:RESULT = new posiblesAcciones(new accionesElemento(pe, pa), li); :} 
         | error INISEC PERSONAJE PARIZQ par PARDER COMA list FINSEC 
         {: parser.report_error("Falta la palabra reservada <posacciones> al comienzo de la declaración.", null); :}
         | POSACCIONES INISEC error PARIZQ par PARDER COMA list FINSEC 
         {: parser.report_error("Falta el personaje.", null); :};
 
-list ::= OBJETO PARIZQ par PARDER lista | error PARIZQ par PARDER lista 
-                                        {: parser.report_error("Falta el objeto antes de su declaración de posibles acciones.", null); :};
+list ::= OBJETO:objet PARIZQ par:pa PARDER lista:lst {:accionesElemento acel = new accionesElemento(objet, pa); RESULT = lst; RESULT.add(acel);:}
+		| error PARIZQ par PARDER lista 
+        {: parser.report_error("Falta el objeto antes de su declaración de posibles acciones.", null); :};
 
-lista ::= COMA list | ;
+lista ::= COMA list:li {:RESULT = li;:}| {:ArrayList<accionesElemento> acciElem = new ArrayList<accionesElemento>(); RESULT = acciElem;:};
 
-par ::= ACCION para | error para {: parser.report_error("Falta la accion.", null); :};
+par ::= ACCION:a para:pra {:RESULT = pra; RESULT.add(a);:}| error para {: parser.report_error("Falta la accion.", null); :};
 
-para ::= COMA par | ;
+para ::= COMA par:pr {:RESULT = pr;:}| {:ArrayList<String> l = new ArrayList<String>(); RESULT = l;:};
 
-plan ::= PLAN INISEC ac FINSEC 
+plan ::= PLAN INISEC ac:a FINSEC {:RESULT = a;:}
         | error INISEC ac FINSEC {: parser.report_error("Falta la palabra reservada <plan> al comienzo de la declaración.", null); :};
 
-ac ::= acc acp;
+ac ::= acc:ac1 acp:ap {:RESULT = ap; RESULT.add(ac1);:};
 
-acp ::= COMA ac | ;
+acp ::= COMA ac:accio {:RESULT = accio;:}| {:ArrayList<Paso> pasoLi = new ArrayList<Paso>(); RESULT = pasoLi;:};
 
-acc ::= ACCION PARIZQ acca | error PARIZQ acca  {: parser.report_error("No se encuentra la siguiente acción.", null); :};
+acc ::= ACCION:a1 PARIZQ acca:aa {: RESULT = new Paso(a1, aa.split(",")[0], aa.split(",")[1], aa.split(",")[2]); :}
+		| error PARIZQ acca  {: parser.report_error("No se encuentra la siguiente acción.", null); :};
 
-acca ::= PERSONAJE PARDER | POSICION COMA POSICION PARDER | OBJETO COMA POSICION acce;
+acca ::= PERSONAJE:per PARDER {:RESULT = per + ", vacio , vacio";:}
+		| POSICION:p1 COMA POSICION:p2 PARDER {:RESULT = "vacio ," + p1 + "," + p2;:} 
+		| OBJETO:o1 COMA POSICION:p1 acce:ae {:RESULT = o1 + "," + p1 + "," + ae;:};
 
-acce ::= PARDER | COMA acci | COMA error {: parser.report_error("No se encuentra el siguiente elemento de posición.", null); :};
+acce ::= PARDER {:RESULT ="vacio";:}| COMA acci:ai {:RESULT = ai;:} 
+		| COMA error {: parser.report_error("No se encuentra el siguiente elemento de posición.", null); :};
 
-acci ::= POSICION PARDER | UBICACION PARDER | error PARDER {: parser.report_error("No se encuentra la posición o ubicación.", null); :};
+acci ::= POSICION:posi PARDER {:RESULT= posi;:}| UBICACION:ubi PARDER {:RESULT = ubi;:} 
+		| error PARDER {: parser.report_error("No se encuentra la posición o ubicación.", null); :};
 

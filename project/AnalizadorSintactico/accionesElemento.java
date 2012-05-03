@@ -31,5 +31,7 @@ public class accionesElemento {
 		this.acciones = acciones;
 	}
 	
-	
+	public String toString() {
+		return elemento + ", " + acciones.toString();
+	}
 }
